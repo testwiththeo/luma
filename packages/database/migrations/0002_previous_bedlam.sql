@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX `columns_board_position_unique` ON `columns` (`board_id`,`position`);
