@@ -1,0 +1,42 @@
+name: Deploy Luma
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: luma-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Install SSH client
+        run: sudo apt-get update && sudo apt-get install --yes openssh-client
+
+      - name: Configure SSH
+        env:
+          DEPLOY_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+        run: |
+          install -m 700 -d "$HOME/.ssh"
+          printf '%s\n' "$DEPLOY_KEY" > "$HOME/.ssh/luma_deploy_key"
+          chmod 600 "$HOME/.ssh/luma_deploy_key"
+          ssh-keyscan -H "$DEPLOY_HOST" >> "$HOME/.ssh/known_hosts"
+
+      - name: Deploy on server
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+          DEPLOY_PORT: ${{ secrets.DEPLOY_PORT || 22 }}
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+        run: |
+          ssh -i "$HOME/.ssh/luma_deploy_key" -p "$DEPLOY_PORT" "$DEPLOY_USER@$DEPLOY_HOST" \
+            "cd '$DEPLOY_PATH' && git fetch origin main && git reset --hard origin/main && docker compose up -d --build && curl --fail --silent --show-error http://127.0.0.1:3000/health"
+
+      - name: Remove SSH key
+        if: always()
+        run: rm -f "$HOME/.ssh/luma_deploy_key"
