@@ -1,5 +1,9 @@
 # Luma
 
+[GitHub repository](https://github.com/testwiththeo/luma) · [Live application](https://luma.theodores.dev/) · [CI workflow](https://github.com/testwiththeo/luma/actions/workflows/ci.yml) · [Deployment workflow](https://github.com/testwiththeo/luma/actions/workflows/deploy.yml)
+
+[![CI](https://github.com/testwiththeo/luma/actions/workflows/ci.yml/badge.svg)](https://github.com/testwiththeo/luma/actions/workflows/ci.yml)
+
 Luma is a local-first Kanban workspace for QA and software engineering work. It runs as a single Node.js service with a React frontend and SQLite persistence.
 
 ## Local development
