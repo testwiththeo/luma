@@ -17,6 +17,18 @@ jobs:
       - name: Install SSH client
         run: sudo apt-get update && sudo apt-get install --yes openssh-client
 
+      - name: Validate deployment configuration
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+          DEPLOY_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+        run: |
+          test -n "$DEPLOY_HOST" || { echo "Missing production secret: DEPLOY_HOST"; exit 1; }
+          test -n "$DEPLOY_USER" || { echo "Missing production secret: DEPLOY_USER"; exit 1; }
+          test -n "$DEPLOY_KEY" || { echo "Missing production secret: DEPLOY_SSH_KEY"; exit 1; }
+          test -n "$DEPLOY_PATH" || { echo "Missing production secret: DEPLOY_PATH"; exit 1; }
+
       - name: Configure SSH
         env:
           DEPLOY_KEY: ${{ secrets.DEPLOY_SSH_KEY }}

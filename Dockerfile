@@ -1,6 +1,11 @@
 FROM node:22-bookworm-slim AS build
 
 WORKDIR /workspace
+RUN apt-get update \
+  && apt-get install --no-install-recommends --yes \
+    build-essential \
+    python3 \
+  && rm -rf /var/lib/apt/lists/*
 RUN corepack enable
 
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml tsconfig.base.json tsconfig.json ./
