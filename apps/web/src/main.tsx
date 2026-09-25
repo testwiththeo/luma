@@ -1,4 +1,4 @@
-import { StrictMode } from 'react';
+import { StrictMode, useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BoardView } from './features/boards/BoardView';
@@ -25,6 +25,18 @@ function App() {
   ].find(Boolean);
   const error = boardQuery.error ?? mutationError;
 
+  const [theme, setTheme] = useState<'dark' | 'light'>(() => {
+    if (typeof window !== 'undefined') {
+      return (localStorage.getItem('luma-theme') as 'dark' | 'light') || 'dark';
+    }
+    return 'dark';
+  });
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('luma-theme', theme);
+  }, [theme]);
+
   if (boardQuery.isPending)
     return (
       <div className="state" role="status">
@@ -50,6 +62,15 @@ function App() {
           luma
         </div>
         <div className="top-actions">
+          <button
+            className="theme-toggle"
+            type="button"
+            onClick={() => setTheme((t) => (t === 'dark' ? 'light' : 'dark'))}
+            aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+            title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+          >
+            {theme === 'dark' ? '☀️' : '🌙'}
+          </button>
           <span className="status-dot" aria-hidden="true" /> <span>Local workspace</span>{' '}
           <button className="avatar" type="button" aria-label="Open profile">
             T
@@ -57,20 +78,7 @@ function App() {
         </div>
       </header>
       <main className="content">
-        <div className="page-heading">
-          <div>
-            <p className="eyebrow">PERSONAL WORKSPACE / TODAY</p>
-            <h1>{board.title}</h1>
-            <p className="subtitle">{board.description}</p>
-          </div>
-          <button
-            className="primary"
-            type="button"
-            onClick={() => document.getElementById('new-task')?.focus()}
-          >
-            + Add task
-          </button>
-        </div>
+        <h1 className="sr-only">{board.title}</h1>
         <TaskCapture board={board} actions={actions} />
         {error && (
           <p className="inline-error" role="alert">

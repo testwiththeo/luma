@@ -77,7 +77,7 @@ body {
 .content {
   max-width: 1440px;
   margin: 0 auto;
-  padding: clamp(48px, 7vw, 92px) clamp(20px, 5vw, 72px);
+  padding: 28px clamp(20px, 5vw, 64px);
 }
 .page-heading {
   display: flex;
@@ -134,8 +134,8 @@ body {
   background: #171c23;
   border-radius: 10px;
   padding: 0 14px;
-  height: 52px;
-  margin-bottom: 46px;
+  height: 50px;
+  margin-bottom: 28px;
 }
 .quick-add:focus-within {
   border-color: #91c958;
@@ -776,4 +776,237 @@ body {
   .empty {
     padding-block: 30px;
   }
+}
+
+/* ==========================================================================
+   DRAG AND DROP ENHANCEMENTS (emil-design-eng tactile micro-interactions)
+   ========================================================================== */
+.task-card[draggable='true'] {
+  cursor: grab;
+  user-select: none;
+}
+
+.task-card[draggable='true']:active {
+  cursor: grabbing;
+}
+
+.task-card.is-dragging {
+  opacity: 0.35;
+  transform: scale(0.97);
+  border: 1.5px dashed #b8ed6b !important;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+}
+
+.task-card.drop-before {
+  position: relative;
+}
+
+.task-card.drop-before::before {
+  content: '';
+  position: absolute;
+  top: -6px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: #b8ed6b;
+  border-radius: 999px;
+  box-shadow: 0 0 10px #b8ed6b;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.task-card.drop-after {
+  position: relative;
+}
+
+.task-card.drop-after::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: #b8ed6b;
+  border-radius: 999px;
+  box-shadow: 0 0 10px #b8ed6b;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.column.is-drag-over {
+  background: rgba(184, 237, 107, 0.035);
+  border-radius: 12px;
+  outline: 2px dashed rgba(184, 237, 107, 0.4);
+  outline-offset: 4px;
+}
+
+.empty.is-drag-over {
+  border-color: #b8ed6b;
+  color: #b8ed6b;
+  background: rgba(184, 237, 107, 0.08);
+}
+
+/* ==========================================================================
+   LIGHT MODE & THEME TOGGLE
+   ========================================================================== */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid #303946;
+  background: #171d24;
+  color: #e8edf3;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.theme-toggle:hover {
+  background: #252e3a;
+  border-color: #4b596a;
+  transform: scale(1.06);
+}
+
+[data-theme='light'] {
+  color: #1a202c;
+  background: #f8fafc;
+}
+
+[data-theme='light'] .app-shell {
+  background: radial-gradient(circle at 88% -10%, #e2e8f0 0, transparent 31rem), #f8fafc;
+}
+
+[data-theme='light'] .topbar {
+  background: rgba(255, 255, 255, 0.92);
+  border-bottom: 1px solid #e2e8f0;
+  color: #0f172a;
+}
+
+[data-theme='light'] .wordmark {
+  color: #0f172a;
+}
+
+[data-theme='light'] .top-actions {
+  color: #64748b;
+}
+
+[data-theme='light'] .theme-toggle {
+  background: #ffffff;
+  border-color: #cbd5e1;
+  color: #0f172a;
+}
+
+[data-theme='light'] .avatar {
+  background: #0f172a;
+  color: #ffffff;
+}
+
+[data-theme='light'] .quick-add {
+  background: #ffffff;
+  border-color: #cbd5e1;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+}
+
+[data-theme='light'] .quick-add input {
+  color: #0f172a;
+}
+
+[data-theme='light'] .quick-add input::placeholder {
+  color: #94a3b8;
+}
+
+[data-theme='light'] .shortcut {
+  color: #94a3b8;
+}
+
+[data-theme='light'] .column-header {
+  border-bottom-color: #e2e8f0;
+}
+
+[data-theme='light'] .column-header h2 {
+  color: #334155;
+}
+
+[data-theme='light'] .count {
+  color: #64748b;
+}
+
+[data-theme='light'] .task-card {
+  background: #ffffff;
+  border-color: #e2e8f0;
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.04),
+    0 2px 6px rgba(0, 0, 0, 0.02);
+  color: #0f172a;
+}
+
+[data-theme='light'] .task-card h3 {
+  color: #0f172a !important;
+  font-weight: 700;
+}
+
+[data-theme='light'] .task-card:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+}
+
+[data-theme='light'] .priority {
+  color: #276717 !important;
+  font-weight: 700;
+}
+
+[data-theme='light'] .priority.high,
+[data-theme='light'] .priority.urgent {
+  color: #b42318 !important;
+  font-weight: 700;
+}
+
+[data-theme='light'] .empty {
+  border-color: #e2e8f0;
+  color: #94a3b8;
+  background: rgba(248, 250, 252, 0.8);
+  opacity: 0.8;
+}
+
+[data-theme='light'] .column.is-drag-over {
+  background: rgba(145, 201, 88, 0.08);
+  outline-color: #91c958;
+}
+
+[data-theme='light'] .card-menu-wrap summary {
+  color: #64748b;
+}
+
+[data-theme='light'] .move-menu {
+  background: #ffffff;
+  border-color: #cbd5e1;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme='light'] .move-menu button {
+  background: #f8fafc;
+  border-color: #e2e8f0;
+  color: #1e293b;
+}
+
+[data-theme='light'] .move-menu button:hover:not(:disabled) {
+  background: #e2e8f0;
+}
+
+[data-theme='light'] .column-settings {
+  background: #ffffff;
+  border-color: #e2e8f0;
+}
+
+[data-theme='light'] .column-settings label {
+  color: #64748b;
+}
+
+[data-theme='light'] .column-settings input {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  color: #0f172a;
 }
